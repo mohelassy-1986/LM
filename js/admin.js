@@ -1,36 +1,25 @@
-function checkAdminAuth() {
-  const input = document.getElementById('admin-pass').value;
+async function renderSubmissions() {
   const config = getConfig();
-  if (input === config.adminPasswordHash) {
-    document.getElementById('admin-login').style.display = 'none';
-    document.getElementById('admin-dashboard').style.display = 'block';
-    initAdminDashboard();
+  let submissions = [];
+
+  // Fetch live entries from Google Sheets backend if URL & Sheet ID are set
+  if (config.appsScriptUrl && config.sheetId) {
+    try {
+      const response = await fetch(`${config.appsScriptUrl}?action=getAllSubmissions&sheetId=${config.sheetId}`);
+      const data = await response.json();
+      if (data.status === 'success') {
+        submissions = data.submissions;
+      }
+    } catch (err) {
+      console.warn('Could not fetch from Google Sheets, showing local entries:', err);
+      submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
+    }
   } else {
-    alert('Invalid Password');
+    // Fallback if Apps Script isn't configured yet
+    submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
   }
-}
 
-function initAdminDashboard() {
-  const config = getConfig();
-  document.getElementById('cfg-apps-script').value = config.appsScriptUrl || '';
-  document.getElementById('cfg-drive-folder').value = config.driveFolderId || '';
-  document.getElementById('cfg-sheet-id').value = config.sheetId || '';
-
-  renderSubmissions();
-}
-
-function saveAdminConfig() {
-  saveConfig({
-    appsScriptUrl: document.getElementById('cfg-apps-script').value,
-    driveFolderId: document.getElementById('cfg-drive-folder').value,
-    sheetId: document.getElementById('cfg-sheet-id').value
-  });
-  alert('Configuration updated successfully!');
-}
-
-function renderSubmissions() {
-  const submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
-  
+  // Update Summary Counters
   document.getElementById('stat-total').innerText = submissions.length;
   document.getElementById('stat-approved').innerText = submissions.filter(s => s.status === 'Approved').length;
   document.getElementById('stat-pending').innerText = submissions.filter(s => s.status === 'Pending').length;
@@ -38,34 +27,29 @@ function renderSubmissions() {
   const tbody = document.getElementById('admin-submissions-body');
   tbody.innerHTML = '';
 
+  if (submissions.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No submissions found.</td></tr>`;
+    return;
+  }
+
   submissions.forEach((item, index) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${new Date(item.date).toLocaleDateString()}</td>
-      <td>${item.name}</td>
-      <td>${item.relationship}</td>
-      <td>${item.message}</td>
-      <td><span class="badge badge-${item.status.toLowerCase()}">${item.status}</span></td>
+      <td>${escapeHtml(item.name)}</td>
+      <td>${escapeHtml(item.relationship)}</td>
+      <td>${escapeHtml(item.message)}</td>
+      <td><span class="badge badge-${(item.status || 'pending').toLowerCase()}">${item.status}</span></td>
       <td>
+        ${item.driveLink ? `<a href="${item.driveLink}" target="_blank" class="btn-sm" style="background:#17a2b8; color:white; text-decoration:none;">Drive</a>` : ''}
         <button class="btn-sm btn-approve" onclick="updateStatus(${index}, 'Approved')">Approve</button>
         <button class="btn-sm btn-reject" onclick="updateStatus(${index}, 'Rejected')">Reject</button>
-        <button class="btn-sm btn-delete" onclick="deleteEntry(${index})">Delete</button>
       </td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-function updateStatus(index, newStatus) {
-  const submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
-  submissions[index].status = newStatus;
-  localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
-  renderSubmissions();
-}
-
-function deleteEntry(index) {
-  const submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
-  submissions.splice(index, 1);
-  localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
-  renderSubmissions();
+function escapeHtml(str) {
+  return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
