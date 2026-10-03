@@ -120,10 +120,12 @@ async function renderSubmissions() {
   // 1. Attempt to fetch live entries from Google Sheets
   if (config.appsScriptUrl && config.sheetId) {
     try {
-      const response = await fetch(`${config.appsScriptUrl}?action=getAllSubmissions&sheetId=${config.sheetId}`);
+      const response = await fetch(`${config.appsScriptUrl}?action=getAllSubmissions&sheetId=${encodeURIComponent(config.sheetId)}`);
       const data = await response.json();
       if (data.status === 'success' && Array.isArray(data.submissions)) {
         submissions = data.submissions;
+        // Keep local cache in sync with latest backend pull
+        localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
       }
     } catch (err) {
       console.warn('Could not fetch from Google Sheets, defaulting to local entries:', err);
@@ -166,14 +168,14 @@ async function renderSubmissions() {
 
     const currentStatus = (item.status || 'Pending').trim();
     const statusClass = currentStatus.toLowerCase();
-    const rowIndex = item.rowIndex || (index + 1);
+    const rowIndex = item.rowIndex || (index + 2); // Header occupies Row 1
 
     tr.innerHTML = `
       <td>${dateStr}</td>
       <td>${escapeHtml(item.name)}</td>
       <td>${escapeHtml(item.relationship)}</td>
       <td>${escapeHtml(item.message)}</td>
-      <td><span class="badge badge-${statusClass}">${escapeHtml(currentStatus)}</span></td>
+      <td><span class="badge badge-${statusClass}">${escapeHtml(currentStatus.toUpperCase())}</span></td>
       <td>
         ${item.driveLink ? `<a href="${escapeHtml(item.driveLink)}" target="_blank" class="btn-sm" style="background:#17a2b8; color:white; text-decoration:none; margin-right: 4px;">Drive</a>` : ''}
         <button type="button" class="btn-sm btn-approve" onclick="updateStatus(${rowIndex}, 'Approved', ${index})">Approve</button>
@@ -186,11 +188,21 @@ async function renderSubmissions() {
 }
 
 /**
- * Updates submission status in Google Sheets and local storage
+ * Updates submission status instantly in UI and syncs to Google Sheets in background
  */
 async function updateStatus(rowIndex, newStatus, localIndex) {
-  const config = getConfig();
+  // 1. Instantly update local cache
+  const localSubmissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
+  if (localSubmissions[localIndex]) {
+    localSubmissions[localIndex].status = newStatus;
+    localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(localSubmissions));
+  }
 
+  // 2. Refresh UI immediately so status badge changes without waiting
+  renderSubmissions();
+
+  // 3. Send update to Google Sheets in background
+  const config = getConfig();
   if (config.appsScriptUrl && config.sheetId) {
     try {
       await fetch(config.appsScriptUrl, {
@@ -204,28 +216,29 @@ async function updateStatus(rowIndex, newStatus, localIndex) {
         })
       });
     } catch (err) {
-      console.warn('Backend status update failed:', err);
+      console.warn('Background Google Sheets update failed:', err);
     }
   }
-
-  // Sync Local Storage
-  const localSubmissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
-  if (localSubmissions[localIndex]) {
-    localSubmissions[localIndex].status = newStatus;
-    localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(localSubmissions));
-  }
-
-  renderSubmissions();
 }
 
 /**
- * Deletes a submission entry
+ * Deletes a submission entry instantly from UI and syncs with Google Sheets
  */
 async function deleteEntry(rowIndex, localIndex) {
   if (!confirm('Are you sure you want to delete this memory submission?')) return;
 
-  const config = getConfig();
+  // 1. Instantly remove from local storage cache
+  const localSubmissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
+  if (localSubmissions[localIndex]) {
+    localSubmissions.splice(localIndex, 1);
+    localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(localSubmissions));
+  }
 
+  // 2. Refresh UI table immediately
+  renderSubmissions();
+
+  // 3. Send delete request to Google Sheets in background
+  const config = getConfig();
   if (config.appsScriptUrl && config.sheetId) {
     try {
       await fetch(config.appsScriptUrl, {
@@ -238,18 +251,9 @@ async function deleteEntry(rowIndex, localIndex) {
         })
       });
     } catch (err) {
-      console.warn('Backend delete request failed:', err);
+      console.warn('Background delete request failed:', err);
     }
   }
-
-  // Remove from Local Storage
-  const localSubmissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
-  if (localSubmissions[localIndex]) {
-    localSubmissions.splice(localIndex, 1);
-    localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(localSubmissions));
-  }
-
-  renderSubmissions();
 }
 
 /**
