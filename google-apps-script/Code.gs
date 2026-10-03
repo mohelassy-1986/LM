@@ -1,16 +1,3 @@
-function doPost(e) {
-  try {
-    const data = JSON.parse(e.postData.contents);
-    if (data.action === 'submitMemory') {
-      const folderUrl = DriveService.saveMemorySubmission(data);
-      SheetService.recordSubmission(data, folderUrl);
-      return responseJSON({ status: 'success', folderUrl: folderUrl });
-    }
-  } catch (err) {
-    return responseJSON({ status: 'error', message: err.toString() });
-  }
-}
-
 function doGet(e) {
   const action = e.parameter.action;
   const sheetId = e.parameter.sheetId;
@@ -19,10 +6,12 @@ function doGet(e) {
     const messages = GuestWallService.getApprovedMessages(sheetId);
     return responseJSON({ status: 'success', messages: messages });
   }
-  return responseJSON({ status: 'error', message: 'Invalid Action' });
-}
+  
+  // NEW: Action for Admin Dashboard to fetch ALL submissions
+  if (action === 'getAllSubmissions') {
+    const submissions = SheetService.getAllSubmissions(sheetId);
+    return responseJSON({ status: 'success', submissions: submissions });
+  }
 
-function responseJSON(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
+  return responseJSON({ status: 'error', message: 'Invalid Action' });
 }
