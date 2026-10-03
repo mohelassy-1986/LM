@@ -1,59 +1,11 @@
 /**
- * Complete Admin Portal Management Logic
- * Lina & Moustafa Wedding Guest Book
- */
-
-// Allow login using ENTER key on password field
-document.addEventListener('DOMContentLoaded', () => {
-  const passInput = document.getElementById('admin-pass');
-  if (passInput) {
-    passInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') checkAdminAuth();
-    });
-  }
-});
-
-/**
- * Validates admin login password
- */
-function checkAdminAuth() {
-  const input = document.getElementById('admin-pass').value.trim();
-  const config = getConfig();
-
-  // Validate password against config or default fallback 'LINA_SASA'
-  if (input === config.adminPasswordHash || input === 'LINA_SASA') {
-    document.getElementById('admin-login').style.display = 'none';
-    document.getElementById('admin-dashboard').style.display = 'block';
-    initAdminDashboard();
-  } else {
-    alert('Invalid Password. Please try again.');
-  }
-}
-
-/**
- * Initializes dashboard fields and loads submission data
- */
-function initAdminDashboard() {
-  const config = getConfig();
-  
-  // Populate configuration fields
-  const appsScriptEl = document.getElementById('cfg-apps-script');
-  const driveFolderEl = document.getElementById('cfg-drive-folder');
-  const sheetIdEl = document.getElementById('cfg-sheet-id');
-
-  if (appsScriptEl) appsScriptEl.value = config.appsScriptUrl || '';
-  if (driveFolderEl) driveFolderEl.value = config.driveFolderId || '';
-  if (sheetIdEl) sheetIdEl.value = config.sheetId || '';
-
-  renderSubmissions();
-}
-/**
- * Admin Session Persistence & Event Handlers
+ * Admin Portal Management Logic — Lina & Moustafa
+ * Features: Persistent session login, Config management, Live Google Sheets sync
  */
 
 const SESSION_AUTH_KEY = 'wedding_guestbook_admin_authed';
 
-// Check for active login session as soon as the page loads
+// Initialize events and check authentication status on page load
 document.addEventListener('DOMContentLoaded', () => {
   const passInput = document.getElementById('admin-pass');
   if (passInput) {
@@ -62,28 +14,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Restore session if previously logged in
+  // Automatically show dashboard if previously logged in
   checkSession();
 });
 
 /**
- * Auto-logs in if session key exists in sessionStorage
+ * Checks if the user is already authenticated in this session or local storage
  */
 function checkSession() {
-  if (sessionStorage.getItem(SESSION_AUTH_KEY) === 'true') {
+  const isAuthedSession = sessionStorage.getItem(SESSION_AUTH_KEY) === 'true';
+  const isAuthedLocal = localStorage.getItem(SESSION_AUTH_KEY) === 'true';
+
+  if (isAuthedSession || isAuthedLocal) {
     showDashboard();
   }
 }
 
 /**
- * Validates admin password and sets session storage
+ * Validates admin password and persists login state
  */
 function checkAdminAuth() {
-  const input = document.getElementById('admin-pass').value.trim();
+  const passInput = document.getElementById('admin-pass');
+  const input = passInput ? passInput.value.trim() : '';
   const config = getConfig();
 
+  // Accept saved config password or default fallback 'LINA_SASA'
   if (input === config.adminPasswordHash || input === 'LINA_SASA') {
     sessionStorage.setItem(SESSION_AUTH_KEY, 'true');
+    localStorage.setItem(SESSION_AUTH_KEY, 'true');
     showDashboard();
   } else {
     alert('Invalid Password. Please try again.');
@@ -91,7 +49,7 @@ function checkAdminAuth() {
 }
 
 /**
- * Displays dashboard view
+ * Displays the main admin dashboard and hides the login form
  */
 function showDashboard() {
   const loginCard = document.getElementById('admin-login');
@@ -104,17 +62,32 @@ function showDashboard() {
 }
 
 /**
- * Optional: Call this to clear session and log out
+ * Clears authentication state and logs out
  */
 function adminLogout() {
   sessionStorage.removeItem(SESSION_AUTH_KEY);
+  localStorage.removeItem(SESSION_AUTH_KEY);
   location.reload();
 }
 
-/* ==========================================================================
-   LEAVE ALL YOUR EXISTING FUNCTIONS BELOW THIS LINE AS THEY ARE
-   (initAdminDashboard, saveAdminConfig, renderSubmissions, updateStatus, etc.)
-   ========================================================================== */
+/**
+ * Initializes dashboard fields with saved config and loads submissions
+ */
+function initAdminDashboard() {
+  const config = getConfig();
+  
+  // Populate backend settings fields
+  const appsScriptEl = document.getElementById('cfg-apps-script');
+  const driveFolderEl = document.getElementById('cfg-drive-folder');
+  const sheetIdEl = document.getElementById('cfg-sheet-id');
+
+  if (appsScriptEl) appsScriptEl.value = config.appsScriptUrl || '';
+  if (driveFolderEl) driveFolderEl.value = config.driveFolderId || '';
+  if (sheetIdEl) sheetIdEl.value = config.sheetId || '';
+
+  renderSubmissions();
+}
+
 /**
  * Saves Admin configuration settings to localStorage
  */
@@ -157,16 +130,22 @@ async function renderSubmissions() {
       submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
     }
   } else {
-    // 2. Fallback to localStorage if Apps Script is not configured
+    // 2. Fallback to localStorage if Apps Script is not configured yet
     submissions = JSON.parse(localStorage.getItem(SUBMISSIONS_KEY) || '[]');
   }
 
   // Update Summary Stat Counters
-  document.getElementById('stat-total').innerText = submissions.length;
-  document.getElementById('stat-approved').innerText = submissions.filter(s => (s.status || '').toLowerCase() === 'approved').length;
-  document.getElementById('stat-pending').innerText = submissions.filter(s => (s.status || '').toLowerCase() === 'pending').length;
+  const statTotal = document.getElementById('stat-total');
+  const statApproved = document.getElementById('stat-approved');
+  const statPending = document.getElementById('stat-pending');
+
+  if (statTotal) statTotal.innerText = submissions.length;
+  if (statApproved) statApproved.innerText = submissions.filter(s => (s.status || '').toLowerCase() === 'approved').length;
+  if (statPending) statPending.innerText = submissions.filter(s => (s.status || '').toLowerCase() === 'pending').length;
 
   const tbody = document.getElementById('admin-submissions-body');
+  if (!tbody) return;
+
   tbody.innerHTML = '';
 
   if (submissions.length === 0) {
