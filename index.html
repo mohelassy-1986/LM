@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lina & Moustafa — Wedding Guest Book</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">L & M</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">عربي</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-img-wrapper">
+        <img id="couple-photo" src="" alt="Lina & Moustafa" class="hero-img">
+      </div>
+      <h1 class="gold-gradient-text" data-i18n="title">Lina & Moustafa</h1>
+      <p id="welcome-msg" data-i18n="subtitle">Every photo tells a story, every message holds a memory, and every voice carries a piece of this special day.</p>
+    </section>
+
+    <!-- Submission Form -->
+    <section id="form-container" class="form-card">
+      <form id="guestbook-form">
+        <div class="form-group">
+          <label data-i18n="fullName">Full Name *</label>
+          <input type="text" id="guest-name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="phoneNumber">Phone Number *</label>
+          <input type="tel" id="guest-phone" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="relationship">Relationship</label>
+          <select id="guest-rel" class="form-control">
+            <option value="Friend" data-i18n="relFriend">Friend</option>
+            <option value="Family" data-i18n="relFamily">Family</option>
+            <option value="Colleague" data-i18n="relColleague">Colleague</option>
+            <option value="Neighbour" data-i18n="relNeighbour">Neighbour</option>
+            <option value="Other" data-i18n="relOther">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="writtenMessage">Written Message</label>
+          <textarea id="guest-msg" class="form-control" maxlength="500" data-i18n="messagePlaceholder"></textarea>
+        </div>
+
+        <!-- Media Uploads & Recorder -->
+        <div class="media-section">
+          <div class="form-group">
+            <label data-i18n="mediaUploads">Upload Photos / Videos</label>
+            <input type="file" id="media-files" class="form-control" multiple accept="image/*,video/*">
+          </div>
+
+          <div class="record-grid">
+            <button type="button" id="btn-record-audio" class="btn-record" onclick="toggleAudioRecord()">
+              🎤 <span data-i18n="recordAudio">Record Voice Note</span>
+            </button>
+            <button type="button" id="btn-record-video" class="btn-record" onclick="toggleVideoRecord()">
+              📹 <span data-i18n="recordVideo">Record Video</span>
+            </button>
+          </div>
+          <video id="video-preview" style="display:none; width:100%; border-radius:8px; margin-top:0.5rem;" autoplay muted></video>
+          <div id="recordings-list" class="recording-preview"></div>
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-primary" style="margin-top:1.5rem;" data-i18n="submitMemory">Submit Memory</button>
+      </form>
+    </section>
+
+    <!-- Thank You Section -->
+    <section id="thank-you-screen" class="form-card thank-you-card" style="display: none;">
+      <h2 data-i18n="thankYouTitle">Thank You ❤️</h2>
+      <p data-i18n="thankYouMsg">Your memory has been saved successfully.</p>
+      <a href="guest-wall.html" class="btn-primary" style="display:inline-block; margin-top:1.5rem; text-decoration:none;" data-i18n="viewWall">Explore Guest Wall</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Lina & Moustafa Wedding Guest Book &copy; 2026 | <a href="admin.html" style="color:var(--primary-gold);" data-i18n="adminPortal">Admin Portal</a></p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/language.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/uploads.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

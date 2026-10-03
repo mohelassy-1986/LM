@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Wall — Lina & Moustafa</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">L & M</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">عربي</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" style="margin-bottom: 1.5rem;">
+      <h1 class="gold-gradient-text" data-i18n="guestWall">Guest Wall</h1>
+    </section>
+
+    <div id="guest-wall-container" class="wall-grid">
+      <!-- Dynamic Wall Cards Rendered Here -->
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/language.js"></script>
+  <script src="js/guestwall.js"></script>
+</body>
+</html>
