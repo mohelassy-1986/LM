@@ -1,69 +1,117 @@
-.admin-dashboard {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
+/* ==========================================================================
+   Admin Portal — Rose Gold & Champagne Styling
+   ========================================================================== */
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .stat-card {
-  background: var(--card-bg);
+  background: var(--pure-cream);
   border: 1px solid var(--border-gold);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 1.5rem;
   text-align: center;
+  box-shadow: 0 6px 16px var(--shadow-rose);
 }
 
 .stat-number {
+  font-family: 'Playfair Display', serif;
   font-size: 2.5rem;
-  font-family: var(--font-serif);
-  color: var(--primary-gold);
+  font-weight: 700;
+  color: var(--rose-gold);
 }
 
+/* Admin Table Styling */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  background: var(--card-bg);
-  border-radius: 8px;
+  background: white;
+  border-radius: 12px;
   overflow: hidden;
 }
 
-.admin-table th, .admin-table td {
-  padding: 1rem;
+.admin-table th, 
+.admin-table td {
+  padding: 1rem 1.2rem;
   text-align: left;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid rgba(183, 110, 121, 0.15);
+  font-size: 0.92rem;
 }
 
 .admin-table th {
-  background: #1a1a1a;
-  color: var(--soft-gold);
+  background: var(--blush-pink);
+  color: var(--rose-gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
+/* Status Badges */
 .badge {
-  padding: 0.25rem 0.6rem;
-  border-radius: 12px;
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.badge-approved { background: rgba(40, 167, 69, 0.2); color: #28a745; }
-.badge-pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+.badge-approved {
+  background: #d4edda;
+  color: #155724;
+}
 
+.badge-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Small Action Buttons */
 .btn-sm {
   padding: 0.4rem 0.8rem;
-  font-size: 0.8rem;
-  border-radius: 4px;
   border: none;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-right: 0.25rem;
+  transition: all 0.2s ease;
+  margin-right: 0.3rem;
 }
 
-.btn-approve { background: #28a745; color: white; }
-.btn-reject { background: #dc3545; color: white; }
-.btn-delete { background: #6c757d; color: white; }
+.btn-approve {
+  background: var(--rose-gold);
+  color: white;
+}
+
+.btn-approve:hover {
+  background: #a25b66;
+}
+
+.btn-reject {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.btn-reject:hover {
+  background: #d6d8db;
+}
+
+.btn-delete {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #bd2130;
+}
