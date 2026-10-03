@@ -1,16 +1,22 @@
+/* ==========================================================================
+   Lina & Moustafa — Floral Luxury Rose Gold Theme
+   ========================================================================== */
+
 :root {
-  --bg-color: #0B0B0B;
-  --card-bg: #141414;
-  --primary-gold: #D4AF37;
-  --soft-gold: #F4E2A1;
-  --accent-gold: #C9A227;
-  --white: #FFFFFF;
-  --text-muted: #A0A0A0;
-  --border-gold: rgba(212, 175, 55, 0.3);
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Inter', sans-serif;
+  --rose-gold: #b76e79;
+  --rose-gold-light: #e8c5c8;
+  --champagne-gold: #d4af37;
+  --soft-cream: #faf6f0;
+  --pure-cream: #fffdfa;
+  --blush-pink: #fcedec;
+  --dark-charcoal: #2c2523;
+  --text-muted: #7a6e6b;
+  --border-gold: rgba(212, 175, 55, 0.35);
+  --shadow-rose: rgba(183, 110, 121, 0.15);
+  --radius-card: 20px;
 }
 
+/* Global Reset & Base Styling */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,261 +24,208 @@
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--white);
-  font-family: var(--font-sans);
-  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--soft-cream);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(232, 197, 200, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.18) 0%, transparent 40%);
+  color: var(--dark-charcoal);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Typography & Headings */
+h1, h2, h3, .brand {
+  font-family: 'Playfair Display', serif;
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, var(--soft-gold) 0%, var(--primary-gold) 50%, var(--accent-gold) 100%);
+  background: linear-gradient(135deg, var(--rose-gold) 0%, var(--champagne-gold) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+/* Floral Ring Header Frame */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid var(--border-gold);
+  position: relative;
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+}
+
+header::before {
+  content: '🌸 🌿 🌹 🌿 🌸';
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
 }
 
 .brand {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: var(--primary-gold);
   text-decoration: none;
-}
-
-.lang-switch {
-  display: flex;
-  gap: 0.5rem;
-  background: #1F1F1F;
-  padding: 0.25rem;
-  border-radius: 20px;
-  border: 1px solid var(--border-gold);
-}
-
-.lang-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  padding: 0.4rem 0.8rem;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-}
-
-.lang-btn.active {
-  background: var(--primary-gold);
-  color: var(--bg-color);
-  font-weight: bold;
-}
-
-.container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-}
-
-.hero {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.hero-img-wrapper {
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 1.5rem;
-  border-radius: 50%;
-  padding: 5px;
-  background: linear-gradient(135deg, var(--soft-gold), var(--accent-gold));
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-}
-
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.hero h1 {
-  font-family: var(--font-serif);
-  font-size: 2.8rem;
+  display: inline-block;
   margin-bottom: 0.5rem;
 }
 
-.hero p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto 1.5rem;
+/* Container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
 }
 
+/* Form Cards & Glassmorphism */
 .form-card {
-  background: var(--card-bg);
+  background: var(--pure-cream);
+  border-radius: var(--radius-card);
+  padding: 2.5rem;
   border: 1px solid var(--border-gold);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-  margin-bottom: 2rem;
+  box-shadow: 0 12px 30px var(--shadow-rose), inset 0 0 15px rgba(255, 255, 255, 0.8);
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
+.form-card::after {
+  content: '🌸';
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.5rem;
+  opacity: 0.4;
+}
+
+/* Form Controls */
 .form-group {
   margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.9rem;
-  color: var(--soft-gold);
-  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--rose-gold);
+  margin-bottom: 0.4rem;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.9rem 1rem;
-  background: #181818;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: var(--white);
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(183, 110, 121, 0.3);
+  background: #ffffff;
+  color: var(--dark-charcoal);
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--primary-gold);
+  border-color: var(--rose-gold);
+  box-shadow: 0 0 0 4px rgba(183, 110, 121, 0.15);
 }
 
-textarea.form-control {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.media-section {
-  border-top: 1px solid rgba(255,255,255,0.1);
-  padding-top: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.record-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.btn-record {
-  background: #222;
-  border: 1px solid var(--border-gold);
-  color: var(--white);
-  padding: 0.8rem;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s;
-}
-
-.btn-record:hover {
-  background: var(--primary-gold);
-  color: var(--bg-color);
-}
-
-.recording-preview {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
+/* Buttons */
 .btn-primary {
   width: 100%;
-  background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
-  color: var(--bg-color);
-  font-weight: bold;
-  font-size: 1.1rem;
   padding: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--rose-gold) 0%, #c47c87 50%, var(--champagne-gold) 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 1.05rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 20px var(--shadow-rose);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 25px rgba(183, 110, 121, 0.3);
 }
 
-.thank-you-card {
-  text-align: center;
-  padding: 3rem 1.5rem;
-}
-
-.thank-you-card h2 {
-  font-family: var(--font-serif);
-  font-size: 2.5rem;
-  color: var(--primary-gold);
-  margin-bottom: 1rem;
-}
+/* ==========================================================================
+   Guest Wall Cards Grid
+   ========================================================================== */
 
 .wall-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 1.8rem;
   margin-top: 2rem;
 }
 
 .wall-card {
-  background: var(--card-bg);
+  background: var(--pure-cream);
+  border-radius: var(--radius-card);
+  padding: 2rem 1.8rem;
   border: 1px solid var(--border-gold);
-  border-radius: 12px;
-  padding: 1.5rem;
+  box-shadow: 0 8px 20px var(--shadow-rose);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.wall-card:hover {
+  transform: translateY(-6px) rotate(-0.5deg);
+  box-shadow: 0 14px 28px rgba(183, 110, 121, 0.25);
+}
+
+/* Floral Ring Ribbon Accent on Card */
+.wall-card::before {
+  content: '💍';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--pure-cream);
+  padding: 0 8px;
+  font-size: 1.1rem;
+}
+
+.guest-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--rose-gold);
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+.guest-rel {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--champagne-gold);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.guest-msg {
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--dark-charcoal);
+  line-height: 1.7;
+  text-align: center;
   position: relative;
 }
 
-.wall-card .guest-name {
-  font-family: var(--font-serif);
-  color: var(--soft-gold);
-  font-size: 1.2rem;
-  margin-bottom: 0.25rem;
-}
-
-.wall-card .guest-rel {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
-}
-
-.wall-card .guest-msg {
-  color: var(--white);
-  font-size: 0.95rem;
-}
-
+/* Footer */
 footer {
-  margin-top: auto;
   text-align: center;
-  padding: 2rem;
-  border-top: 1px solid var(--border-gold);
-  font-size: 0.85rem;
+  padding: 3rem 1rem;
   color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px dashed var(--border-gold);
+  margin-top: 3rem;
 }
 
-@media (max-width: 600px) {
-  .record-grid {
-    grid-template-columns: 1fr;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
