@@ -47,7 +47,74 @@ function initAdminDashboard() {
 
   renderSubmissions();
 }
+/**
+ * Admin Session Persistence & Event Handlers
+ */
 
+const SESSION_AUTH_KEY = 'wedding_guestbook_admin_authed';
+
+// Check for active login session as soon as the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  const passInput = document.getElementById('admin-pass');
+  if (passInput) {
+    passInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkAdminAuth();
+    });
+  }
+
+  // Restore session if previously logged in
+  checkSession();
+});
+
+/**
+ * Auto-logs in if session key exists in sessionStorage
+ */
+function checkSession() {
+  if (sessionStorage.getItem(SESSION_AUTH_KEY) === 'true') {
+    showDashboard();
+  }
+}
+
+/**
+ * Validates admin password and sets session storage
+ */
+function checkAdminAuth() {
+  const input = document.getElementById('admin-pass').value.trim();
+  const config = getConfig();
+
+  if (input === config.adminPasswordHash || input === 'LINA_SASA') {
+    sessionStorage.setItem(SESSION_AUTH_KEY, 'true');
+    showDashboard();
+  } else {
+    alert('Invalid Password. Please try again.');
+  }
+}
+
+/**
+ * Displays dashboard view
+ */
+function showDashboard() {
+  const loginCard = document.getElementById('admin-login');
+  const dashboard = document.getElementById('admin-dashboard');
+
+  if (loginCard) loginCard.style.display = 'none';
+  if (dashboard) dashboard.style.display = 'block';
+
+  initAdminDashboard();
+}
+
+/**
+ * Optional: Call this to clear session and log out
+ */
+function adminLogout() {
+  sessionStorage.removeItem(SESSION_AUTH_KEY);
+  location.reload();
+}
+
+/* ==========================================================================
+   LEAVE ALL YOUR EXISTING FUNCTIONS BELOW THIS LINE AS THEY ARE
+   (initAdminDashboard, saveAdminConfig, renderSubmissions, updateStatus, etc.)
+   ========================================================================== */
 /**
  * Saves Admin configuration settings to localStorage
  */
