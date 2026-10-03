@@ -115,3 +115,33 @@
 .btn-delete:hover {
   background: #bd2130;
 }
+/* Collapsible Config Drawer Styling */
+.config-drawer {
+  background: var(--pure-cream);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  margin-top: 2rem;
+  overflow: hidden;
+}
+
+.config-summary {
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  background: rgba(183, 110, 121, 0.05);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.config-summary:hover {
+  background: rgba(183, 110, 121, 0.12);
+  color: var(--rose-gold);
+}
+
+.config-content {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-gold);
+  background: white;
+}
