@@ -1,7 +1,19 @@
 async function renderSubmissions() {
   const config = getConfig();
   let submissions = [];
+function checkAdminAuth() {
+  const input = document.getElementById('admin-pass').value.trim();
+  const config = getConfig();
 
+  // Allow login if input matches either the current config password OR default fallback
+  if (input === config.adminPasswordHash || input === 'LINA_SASA') {
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-dashboard').style.display = 'block';
+    initAdminDashboard();
+  } else {
+    alert('Invalid Password');
+  }
+}
   // Fetch live entries from Google Sheets backend if URL & Sheet ID are set
   if (config.appsScriptUrl && config.sheetId) {
     try {
