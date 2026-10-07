@@ -3,97 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lina & Moustafa — Wedding Guest Book</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Wedding Wishes & Greetings</title>
+  
+  <!-- Google Fonts for Elegant Floral Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --blush-bg: #fdf8f5;
+      --card-bg: #ffffff;
+      --sage-green: #7d8c73;
+      --soft-rose: #d8a7a7;
+      --text-dark: #3a3a3a;
+      --gold-accent: #c5a059;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--blush-bg);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 10px;
+      background-image: 
+        radial-gradient(circle at 0% 0%, rgba(216, 167, 167, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(125, 140, 115, 0.15) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background-color: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .header {
+      padding: 40px 25px 20px 25px;
+      text-align: center;
+    }
+
+    .floral-divider {
+      font-size: 24px;
+      color: var(--gold-accent);
+      margin-bottom: 10px;
+      letter-spacing: 4px;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: var(--sage-green);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: #666;
+      max-width: 80%;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .form-wrapper {
+      padding: 10px 20px 30px 20px;
+      width: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 700px;
+      border: none;
+      border-radius: 12px;
+    }
+
+    .footer {
+      text-align: center;
+      padding-bottom: 25px;
+      font-size: 0.8rem;
+      color: #999;
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 2.1rem;
+      }
+      .header p {
+        max-width: 95%;
+      }
+      .form-wrapper {
+        padding: 5px 10px 20px 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <a href="index.html" class="brand">L & M</a>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
-      <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">عربي</button>
-    </div>
-  </header>
 
-  <main class="container">
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-img-wrapper">
-        <img id="couple-photo" src="" alt="Lina & Moustafa" class="hero-img">
-      </div>
-      <h1 class="gold-gradient-text" data-i18n="title">Lina & Moustafa</h1>
-      <p id="welcome-msg" data-i18n="subtitle">Every photo tells a story, every message holds a memory, and every voice carries a piece of this special day.</p>
-    </section>
+  <div class="container">
+    <header class="header">
+      <div class="floral-divider">❀ ❁ ❀</div>
+      <h1>Wedding Wishes</h1>
+      <p>Leave your love, photos, videos, or voice messages for the happy couple</p>
+    </header>
 
-    <!-- Submission Form -->
-    <section id="form-container" class="form-card">
-      <form id="guestbook-form">
-        <div class="form-group">
-          <label data-i18n="fullName">Full Name *</label>
-          <input type="text" id="guest-name" class="form-control" required>
-        </div>
+    <main class="form-wrapper">
+      <iframe 
+        id="JotFormIFrame-262794424640057"
+        title="Wedding Greetings Form"
+        onload="window.parent.scrollTo(0,0)"
+        allowtransparency="true"
+        allow="geolocation; microphone; camera; fullscreen"
+        src="https://form.jotform.com/262794424640057"
+        frameborder="0"
+        style="min-width:100%;max-width:100%;height:700px;border:none;"
+        scrolling="no">
+      </iframe>
+    </main>
 
-        <div class="form-group">
-          <label data-i18n="phoneNumber">Phone Number *</label>
-          <input type="tel" id="guest-phone" class="form-control" required>
-        </div>
+    <footer class="footer">
+      <p>Thank you for celebrating with us! 💕</p>
+    </footer>
+  </div>
 
-        <div class="form-group">
-          <label data-i18n="relationship">Relationship</label>
-          <select id="guest-rel" class="form-control">
-            <option value="Friend" data-i18n="relFriend">Friend</option>
-            <option value="Family" data-i18n="relFamily">Family</option>
-            <option value="Colleague" data-i18n="relColleague">Colleague</option>
-            <option value="Neighbour" data-i18n="relNeighbour">Neighbour</option>
-            <option value="Other" data-i18n="relOther">Other</option>
-          </select>
-        </div>
+  <!-- Jotform Auto-Resizer Script -->
+  <script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js"></script>
+  <script>
+    window.jotformEmbedHandler("iframe[id='JotFormIFrame-262794424640057']", "https://form.jotform.com/")
+  </script>
 
-        <div class="form-group">
-          <label data-i18n="writtenMessage">Written Message</label>
-          <textarea id="guest-msg" class="form-control" maxlength="500" data-i18n="messagePlaceholder"></textarea>
-        </div>
-
-        <!-- Media Uploads & Recorder -->
-        <div class="media-section">
-          <div class="form-group">
-            <label data-i18n="mediaUploads">Upload Photos / Videos</label>
-            <input type="file" id="media-files" class="form-control" multiple accept="image/*,video/*">
-          </div>
-
-          <div class="record-grid">
-            <button type="button" id="btn-record-audio" class="btn-record" onclick="toggleAudioRecord()">
-              🎤 <span data-i18n="recordAudio">Record Voice Note</span>
-            </button>
-            <button type="button" id="btn-record-video" class="btn-record" onclick="toggleVideoRecord()">
-              📹 <span data-i18n="recordVideo">Record Video</span>
-            </button>
-          </div>
-          <video id="video-preview" style="display:none; width:100%; border-radius:8px; margin-top:0.5rem;" autoplay muted></video>
-          <div id="recordings-list" class="recording-preview"></div>
-        </div>
-
-        <button type="submit" id="btn-submit" class="btn-primary" style="margin-top:1.5rem;" data-i18n="submitMemory">Submit Memory</button>
-      </form>
-    </section>
-
-    <!-- Thank You Section -->
-    <section id="thank-you-screen" class="form-card thank-you-card" style="display: none;">
-      <h2 data-i18n="thankYouTitle">Thank You ❤️</h2>
-      <p data-i18n="thankYouMsg">Your memory has been saved successfully.</p>
-      <a href="guest-wall.html" class="btn-primary" style="display:inline-block; margin-top:1.5rem; text-decoration:none;" data-i18n="viewWall">Explore Guest Wall</a>
-    </section>
-  </main>
-
-  <footer>
-    <p>Lina & Moustafa Wedding Guest Book &copy; 2026 | <a href="admin.html" style="color:var(--primary-gold);" data-i18n="adminPortal">Admin Portal</a></p>
-  </footer>
-
-  <script src="js/config.js"></script>
-  <script src="js/language.js"></script>
-  <script src="js/recorder.js"></script>
-  <script src="js/uploads.js"></script>
-  <script src="js/main.js"></script>
 </body>
 </html>
